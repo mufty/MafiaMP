@@ -292,5 +292,7 @@ namespace SDK {
         gPatterns.Lua__loadbufferAddr = hook::get_opcode_address("E8 ? ? ? ? 85 C0 74 2F 48 8B 47 48");
         gPatterns.Lua__tostringAddr = reinterpret_cast<uint64_t>(hook::pattern("4C 8B C9 81 FA ? ? ? ? 7E 37").get_first());
         gPatterns.Lua__isstringAddr = hook::get_opcode_address("E8 ? ? ? ? 85 C0 74 5E 8B D3");
+        gPatterns.Lua__pushcclosureAddr = hook::get_opcode_address("E8 ? ? ? ? 48 8B 47 48 45 33 C9 ? ? C0");
+        gPatterns.Lua__setglobalAddr = hook::get_opcode_address("E8 ? ? ? ? 48 8B 54 24 ? 48 8B CE E8 ? ? ? ? 85 C0");
     }
 }; // namespace SDK

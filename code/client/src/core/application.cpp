@@ -39,6 +39,8 @@
 namespace MafiaMP::Core {
     std::unique_ptr<Application> gApplication = nullptr;
 
+    extern std::string gProjectPath;
+
     bool Application::PostInit() {
         // Create the state machine and initialize
         _stateMachine = std::make_shared<Framework::Utils::States::Machine>();
@@ -445,6 +447,7 @@ namespace MafiaMP::Core {
                 }
                 std::string filename = result["file"].as<std::string>();
                 if (!filename.empty()) {
+                    Framework::Logging::GetLogger(LOG_LUA)->debug("Opening scripts file: " + filename);
                     // todo use prefix path for lua scripts? (currently hardcoded to "scripts/")
                     cppfs::FileHandle file = cppfs::fs::open(gProjectPath + "/scripts/" + filename);
                     if (!file.exists()) {
@@ -456,6 +459,10 @@ namespace MafiaMP::Core {
                         return;
                     }
                     std::string content = file.readFile();
+                    // HACK set up package.path
+                    auto hack = fmt::format("package.path = package.path .. \";{}\\scripts\\?.lua\"", gProjectPath);
+                    std::replace(hack.begin(), hack.end(), '\\', '/');
+                    content.insert(0, hack);
                     if (content.empty()) {
                         Framework::Logging::GetLogger(LOG_LUA)->warn("Script is empty");
                         return;

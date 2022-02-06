@@ -231,6 +231,8 @@ namespace SDK {
         uint64_t Lua__loadbufferAddr = 0x0;
         uint64_t Lua__tostringAddr = 0x0;
         uint64_t Lua__isstringAddr = 0x0;
+        uint64_t Lua__pushcclosureAddr = 0x0;
+        uint64_t Lua__setglobalAddr = 0x0;
 
         static void InitPatterns();
     };
